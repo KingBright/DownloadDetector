@@ -1,0 +1,21 @@
+{
+  "manifest_version": 2,
+  "name": "DownloadDetector",
+  "short_name": "DownloadDetector",
+  "description": "",
+  "version": "0.0.2",
+  "minimum_chrome_version": "38",
+  "icons": {
+    "16": "assets/d_16.png",
+    "128": "assets/d_128.png"
+  },
+  "browser_action": {
+    "default_icon": "assets/d_128.png",
+    "default_popup": "popup.html"
+  },
+  "permissions": [
+    "tabs",
+    "http://*/",
+    "https://*/"
+  ]
+}
