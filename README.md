@@ -1,7 +1,7 @@
 # DownloadDetector
 A chrome extension to help detecting download urls in the page you are viewing.
 
-### Supported schemes
+### Supported schemes/patterns
 - [x] ftp://
 - [x] thunder://
 - [x] ed2k://
