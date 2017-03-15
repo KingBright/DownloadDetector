@@ -19,5 +19,5 @@ A chrome extension to help detecting download urls in the page you are viewing.
 - [ ] Auto popup/notification when there are downloadable items.
 
 ### More functions
-- [ ] One click copy
+- [x] One click copy
 - [ ] Auto popup
