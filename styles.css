@@ -1,3 +1,9 @@
 /* CSS file placeholder. */
 body {
+    width: 300px;
+    height: auto;
+}
+
+ul {
+    list-style-type: decimal;
 }

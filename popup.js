@@ -7,13 +7,36 @@ function loadConfig() {
     supportSchemes.push("thunder://");
     supportSchemes.push("magnet:?xt=urn:btih:");
     supportSchemes.push("http://gdl.lixian.vip.xunlei.com");
+
+    toastr.options = {
+        "closeButton": false,
+        "debug": false,
+        "newestOnTop": false,
+        "progressBar": false,
+        "positionClass": "toast-top-full-width",
+        "preventDuplicates": false,
+        "onclick": null,
+        "showDuration": "300",
+        "hideDuration": "1000",
+        "timeOut": "2500",
+        "extendedTimeOut": "1000",
+        "showEasing": "swing",
+        "hideEasing": "linear",
+        "showMethod": "fadeIn",
+        "hideMethod": "fadeOut"
+    }
 }
 
 var ftp = [];
+var ftpName = [];
 var ed2k = [];
+var ed2kName = [];
 var thunder = [];
+var thunderName = [];
 var magnet = [];
-var vip =[];
+var magnetName = [];
+var vip = [];
+var vipName = [];
 
 function getPrefix(url) {
     for (var i = 0; i < supportSchemes.length; i++) {
@@ -29,24 +52,67 @@ function showError(msg) {
     updateBadgeAndTitle();
 }
 
-function insertIntoArray(prefix, link) {
+function insertIntoArray(prefix, link, name) {
     var array;
+    var nameArray;
     if (prefix == "ftp://") {
         array = ftp;
+        nameArray = ftpName;
     } else if (prefix == "ed2k://") {
         array = ed2k;
+        nameArray = ed2kName;
     } else if (prefix == "thunder://") {
         array = thunder;
+        nameArray = thunderName;
     } else if (prefix == "magnet:?xt=urn:btih:") {
         array = magnet;
+        nameArray = magnetName;
     } else {
         array = vip;
+        nameArray = vipName;
+    }
+
+    var body = $("body");
+    var id = prefix.split(":")[0];
+
+    var title = $("#" + id + "-title");
+    if (title.length == 0) {
+        body.append("<h3 id='" + id + "-title'>" + id + "</h3>")
+        title = $("#" + id + "-title");
+    }
+
+    var list = $("#" + id + "-list");
+    if (list.length == 0) {
+        body.append("<ul id='" + id + "-list'></ul>")
+        list = $("#" + id + "-list")
+    }
+
+    var copyBtn = $("#" + id + "-btn");
+    if (copyBtn.length == 0) {
+        body.append("<button id='" + id + "-btn'>Copy All</button>");
+        copyBtn = $("#" + id + "-btn");
+        new Clipboard('#' + id + '-btn');
+        $('#' + id + '-btn').click(function () {
+            toastr["info"]("All links of above items are copied.")
+        })
     }
 
     if ($.inArray(link, array) == -1) {
-        array.push(link);
-        var id = prefix.split(":")[0];
-        $("#" + id).append("<li>" + link + "</li>");
+        var index = array.push(link);
+        nameArray.push(name);
+
+        list.append("<li id='" + id + "-li" + index + "' data-clipboard-text='" + link + "'>" + name + "</li>");
+
+        new Clipboard("#" + id + "-li" + index);
+        $("#" + id + "-li" + index).click(function () {
+            toastr["info"]("The link of this item is copied.")
+        })
+
+        if (copyBtn.attr('data-clipboard-text')) {
+            copyBtn.attr('data-clipboard-text', copyBtn.attr('data-clipboard-text') + "\n" + link);
+        } else {
+            copyBtn.attr('data-clipboard-text', link);
+        }
     }
 }
 
@@ -92,7 +158,7 @@ function detect(tab) {
                 var prefix = getPrefix(link);
 
                 if (prefix !== null) {
-                    insertIntoArray(prefix, link);
+                    insertIntoArray(prefix, link, name);
                 }
             });
         }

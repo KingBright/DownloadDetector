@@ -1,9 +1,9 @@
 {
-  "manifest_version": 2,
+  "manifest_version": 3,
   "name": "DownloadDetector",
   "short_name": "DownloadDetector",
   "description": "",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "minimum_chrome_version": "38",
   "icons": {
     "16": "assets/d_16.png",
