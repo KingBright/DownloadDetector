@@ -143,24 +143,24 @@ function detect(tab) {
             code: "document.getElementsByTagName('html')[0].innerHTML;"
         },
         function (page) {
-            $(page[0]).find('[src]').each(function () {
-                var link = $(this).attr('src');
-                var name = $(this).text();
-                var prefix = getPrefix(link);
+            function find(context, node, attr) {
+                $(context).find(node).each(function () {
+                    var link = $(this).attr(attr);
+                    var name = $(this).text();
+                    if (!name) {
+                        name = link;
+                    }
+                    var prefix = getPrefix(link);
 
-                if (prefix !== null) {
-                    insertIntoArray(prefix, link);
-                }
-            });
-            $(page[0]).find('[href]').each(function () {
-                var link = $(this).attr('href');
-                var name = $(this).text();
-                var prefix = getPrefix(link);
+                    if (prefix !== null) {
+                        insertIntoArray(prefix, link, name);
+                    }
+                });
+            }
 
-                if (prefix !== null) {
-                    insertIntoArray(prefix, link, name);
-                }
-            });
+            find(page[0], '[value]', 'value');
+            find(page[0], '[href]', 'href');
+            find(page[0], '[src]', 'src');
         }
     );
 }
