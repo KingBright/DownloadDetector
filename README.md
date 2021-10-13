@@ -21,3 +21,6 @@ A chrome extension to help detecting download urls in the page you are viewing.
 ### More functions
 - [x] One click copy
 - [ ] Auto popup
+
+### Doc reference
+- https://developer.chrome.com/docs/extensions/mv3/
