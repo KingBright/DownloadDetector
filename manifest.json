@@ -9,12 +9,14 @@
     "16": "assets/d_16.png",
     "128": "assets/d_128.png"
   },
-  "browser_action": {
+  "action": {
     "default_icon": "assets/d_128.png",
     "default_popup": "popup.html"
   },
   "permissions": [
-    "tabs",
+    "tabs"
+  ],
+  "host_permissions": [
     "http://*/",
     "https://*/"
   ]
