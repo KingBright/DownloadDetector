@@ -138,37 +138,60 @@ function detect(tab) {
         return;
     }
 
-    chrome.tabs.executeScript(null,
-        {
-            code: "document.getElementsByTagName('html')[0].innerHTML;"
-        },
-        function (page) {
-            function find(context, node, attr) {
-                $(context).find(node).each(function () {
-                    var link = $(this).attr(attr);
-                    var name = $(this).text();
-                    if (!name) {
-                        name = link;
-                    }
-                    var prefix = getPrefix(link);
+    async function getCurrentTab() {
+        let queryOptions = { active: true, currentWindow: true };
+        let [tab] =await chrome.tabs.query(queryOptions);
+        return tab;
+    }
 
-                    if (prefix !== null) {
-                        insertIntoArray(prefix, link, name);
-                    }
-                });
-            }
-
-            find(page[0], '[value]', 'value');
-            find(page[0], '[href]', 'href');
-            find(page[0], '[src]', 'src');
+    function parsePage(tabId) {
+        function getContent() {
+            return document.getElementsByTagName('html')[0].innerHTML;
         }
-    );
+        chrome.scripting.executeScript(
+            {
+                target: { tabId: tabId },
+                func: getContent
+            },
+            function (page) {
+                console.log("callback", page)
+               // let doc = new DOMParser().parseFromString(page[0].result, 'text/html');
+             //   content = doc.documentElement.textContent
+                content = page[0].result
+                console.log("content",content)
+                function find(context, node, attr) {
+                    $(context).find(node).each(function () {
+                        var link = $(this).attr(attr);
+                        var name = $(this).text();
+                        if (!name) {
+                            name = link;
+                        }
+                        var prefix = getPrefix(link);
+                        console.log(prefix,link,name)
+                        if (prefix !== null) {
+                            insertIntoArray(prefix, link, name);
+                        }
+                    });
+                }
+
+                find(content, '[value]', 'value');
+                find(content, '[href]', 'href');
+                find(content, '[src]', 'src');
+            }
+        );
+    }
+
+    tabPromis = getCurrentTab();
+    tabPromis.then((tab) => {
+        console.log("current tab is ", tab)
+        parsePage(tab.id)
+    })
 }
 window.onload = function () {
     //Init
     loadConfig();
 
-    chrome.browserAction.onClicked.addListener(function (tab) {
+    chrome.action.onClicked.addListener(function (tab) {
         detect(tab);
     });
 
