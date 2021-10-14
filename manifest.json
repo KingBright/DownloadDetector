@@ -14,7 +14,8 @@
     "default_popup": "popup.html"
   },
   "permissions": [
-    "tabs"
+    "tabs",
+    "scripting"
   ],
   "host_permissions": [
     "http://*/",
