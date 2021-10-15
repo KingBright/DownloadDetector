@@ -23,4 +23,5 @@ A chrome extension to help detecting download urls in the page you are viewing.
 - [ ] Auto popup
 
 ### Doc reference
-- https://developer.chrome.com/docs/extensions/mv3/
+- Chrome extetion MV3 doc: https://developer.chrome.com/docs/extensions/mv3/
+- Synology DownloadStation Api: https://global.download.synology.com/download/Document/Software/DeveloperGuide/Package/DownloadStation/All/enu/Synology_Download_Station_Web_API.pdf
