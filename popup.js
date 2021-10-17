@@ -103,16 +103,10 @@ function insertIntoArray(prefix, link, name) {
     body.append("<button id='" + id + "-stsbtn'>Send To My Syno</button>");
     sendToSynoBtn = $("#" + id + "-stsbtn");
     $("#" + id + "-stsbtn").click(function () {
-      var myhost = "https://kingbright.synology.me:5001";
-      var synoApiInfoUrl =
-        myhost +
-        "/webapi/query.cgi?api=SYNO.API.Info&version=1&method=query&query=SYNO.API.Auth,SYNO.DownloadStation2.Task";
-      fetch(synoApiInfoUrl)
-        .then((r) => r.text())
-        .then((result) => {
-          console.log(result);
-        });
-      toastr["info"]("Not implemented yet.");
+      urls = "";
+      array.forEach((v, i) => (urls += encodeURIComponent(v) + ","));
+      console.log("send to my synology station", urls);
+      sendToMySyno(urls);
     });
   }
 
@@ -204,12 +198,13 @@ function detect(tab) {
         }
 
         // add setting btn
+        var body = $("body");
         body.append("<div><button id='options'>Options</button></div>");
-        optionsBtn = $("#options");
-        optionsBtn.onclick = function () {
+        $("#options").click(function () {
+          console.log("open options page");
           let url = chrome.runtime.getURL("options.html");
           let tab = chrome.tabs.create({ url });
-        };
+        });
 
         find(content, "[value]", "value");
         find(content, "[href]", "href");
