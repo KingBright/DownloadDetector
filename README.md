@@ -14,6 +14,10 @@ A chrome extension to help detecting download urls in the page you are viewing.
 - [ ] Document types
 - [ ] Image types
 
+### Support send to remote downloader
+- [x] Synology DownloadStation
+- [ ] Thunder Synology download kit 
+
 ### Settings
 - [ ] Support to select types to detect
 - [ ] Auto popup/notification when there are downloadable items.
