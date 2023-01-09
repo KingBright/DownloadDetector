@@ -1,6 +1,9 @@
 var supportSchemes;
 
 function loadConfig() {
+  validSecondaryLinks = [];
+  validSecondaryLinks.push("https://www.chaospace.fun/links");
+
   supportSchemes = [];
   supportSchemes.push("ftp://");
   supportSchemes.push("ed2k://");
@@ -45,6 +48,15 @@ function getPrefix(url) {
     }
   }
   return null;
+}
+
+function isSecondaryLink(url) {
+  for (var i = 0; i < validSecondaryLinks.length; i++) {
+    if (url.startsWith(validSecondaryLinks[i])) {
+      return true;
+    }
+  }
+  return false;
 }
 
 function showError(msg) {
@@ -181,6 +193,13 @@ function detect(tab) {
       },
       function (page) {
         content = page[0].result;
+
+        function realFind(context) {
+          find(context, "[value]", "value");
+          find(context, "[href]", "href");
+          find(context, "[src]", "src");
+        }
+
         function find(context, node, attr) {
           $(context)
             .find(node)
@@ -194,6 +213,14 @@ function detect(tab) {
               if (prefix !== null) {
                 insertIntoArray(prefix, link, name);
               }
+              var isValidLink = isSecondaryLink(link);
+              if (isValidLink) {
+                fetch(link)
+                  .then((response) => response.text())
+                  .then((response) => {
+                    realFind(response);
+                  });
+              }
             });
         }
 
@@ -206,9 +233,7 @@ function detect(tab) {
           let tab = chrome.tabs.create({ url });
         });
 
-        find(content, "[value]", "value");
-        find(content, "[href]", "href");
-        find(content, "[src]", "src");
+        realFind(content);
       }
     );
   }
